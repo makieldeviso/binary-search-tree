@@ -17,15 +17,25 @@ class Tree {
 
             // Merges leftSide and rightSide
             const merge = function (left, right) {
+                console.log(left, right);
                 let sortedArr = []
 
                 while(left.length && right.length) {
+                    const lastValue = sortedArr[sortedArr.length - 1];
+                    
+                    // let newValue = left[0] < right[0] ? left.shift() : right.shift();
+                    let newValue;
                     if (left[0] < right[0]) {
-                        sortedArr.push(left.shift());
+                        newValue = left.shift();
                     } else {
-                        sortedArr.push(right.shift());
+                        newValue = right.shift();
                     }
-                }
+
+                    // Push new value if it is not equal to last value. Conditional, removes duplicate
+                    if (lastValue !== newValue) {
+                        sortedArr.push(newValue);
+                    }
+                }   
 
                 return [...sortedArr, ...left, ...right]
             }
@@ -62,6 +72,7 @@ class Tree {
 
         // Utility functions calls
         const sortedArr = sortArr(arr); // sorts the argument array using merge sort
+        console.log(sortedArr);
         //  Reassign tree root node by executing build tree function using the sorted array
         this.root = createTree(sortedArr, sortedArr[0], sortedArr[sortedArr.length - 1]);
     }
@@ -109,12 +120,15 @@ class Tree {
 
 const testArr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 const testTree = new Tree();
-// testTree.buildTree(testArr);
-testTree.insert(50);
-testTree.insert(10);
-testTree.insert(60);
-testTree.insert(30);
-testTree.insert(20);
+testTree.buildTree(testArr);
+// testTree.insert(50);
+// testTree.insert(10);
+// testTree.insert(60);
+// testTree.insert(30);
+// testTree.insert(20);
+// testTree.insert(5);
+// testTree.insert(7);
+// testTree.insert(6);
 
 testTree.printTree();
 console.log(testTree)

@@ -89,17 +89,36 @@ class Tree {
             if (root.data === newValue) {
                 return root;
             }
-
+            
             if (root.data > newValue) {
                 root.left =  insertNode (root.left, newValue);
             } else {
                 root.right = insertNode (root.right, newValue);
             }
             
+            // Returns the updated root
             return root;
         }
 
         this.root = insertNode(this.root, value);
+    }
+
+    find (value) {
+
+        const findNode = function (root, reqValue) {
+
+            if (root === null) return null
+
+            if (root.data === reqValue) return root
+
+            const leftSide = findNode(root.left, reqValue);
+            const rightSide = findNode(root.right, reqValue);
+
+            return leftSide ? leftSide : rightSide;
+        }
+
+        return findNode(this.root, value)
+
     }
 
     printTree () {
@@ -135,4 +154,5 @@ testTree.insert(7);
 testTree.insert(50);
 
 testTree.printTree();
-console.log(testTree)
+console.log(testTree.find(50));
+// console.log(testTree)

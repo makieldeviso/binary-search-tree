@@ -89,7 +89,7 @@ class Tree {
             if (root.data === newValue) {
                 return root;
             }
-            
+
             if (root.data > newValue) {
                 root.left =  insertNode (root.left, newValue);
             } else {
@@ -121,6 +121,83 @@ class Tree {
 
     }
 
+    delete (value) {
+
+        // find if the Node exist in the tree
+        const nodeDel = this.find(value);
+        
+        // Utility function when deleting leaf nodes/ no right and left children
+        const deleteLeafNode = function (root, reqValue, parent) {
+            if (root === null) return root
+
+            if (root.data === reqValue) {
+
+                if (parent.left === root) {
+                    parent.left = null;
+            
+                } else {
+                    parent.right = null;
+                }
+
+                root = null;
+                return root
+            }   
+        
+            deleteLeafNode(root.left, reqValue, root);
+            deleteLeafNode(root.right, reqValue, root);
+            
+            return root;
+        }
+        
+        // Utility function if one child is empty
+        const deleteOneChildNode = function (root, reqValue, parent) {
+            if (root === null) return root
+
+            if (root.data === reqValue) {
+
+                let successor;
+                if (root.left === null) {
+                     successor = root.right;
+
+                } else {
+                    successor = root.left;
+                }
+                
+                if (parent.left === root) {
+                    parent.left = successor;
+                } else {
+                    parent.right = successor;
+                }   
+                
+                root = successor;
+                return root
+            }   
+        
+            deleteOneChildNode(root.left, reqValue, root);
+            deleteOneChildNode(root.right, reqValue, root);
+            
+            return root;
+        }
+
+
+        if (!nodeDel) {
+            return
+
+        } else if (!nodeDel.left && !nodeDel.right) {
+            this.root = deleteLeafNode(this.root, value, null);
+
+        } else if ( (nodeDel.left && !nodeDel.right) || (!nodeDel.left && nodeDel.right) ) {
+            console.log('one child')
+            this.root = deleteOneChildNode(this.root, value, null);
+
+        }else {
+            return 'Waw'
+        }
+
+        
+
+    }
+
     printTree () {
 
         const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -147,12 +224,20 @@ const testTree = new Tree();
 testTree.insert(50);
 testTree.insert(10);
 testTree.insert(60);
+testTree.insert(70);
+testTree.insert(65);
+testTree.insert(80);
+testTree.insert(75);
 testTree.insert(30);
 testTree.insert(20);
+testTree.insert(25);
 testTree.insert(5);
 testTree.insert(7);
 testTree.insert(50);
 
 testTree.printTree();
-console.log(testTree.find(50));
-// console.log(testTree)
+testTree.delete(60);
+testTree.delete(80);
+
+testTree.printTree();
+console.log(testTree);

@@ -123,127 +123,6 @@ class Tree {
 
     delete (value) {
 
-        // find if the Node exist in the tree
-        const nodeDel = this.find(value);
-        const nodeParent = this.parent(value);
-        
-        // Utility function when deleting leaf nodes/ no right and left children
-        const deleteLeafNode = function (root, reqValue, parent) {
-            if (root === null) return root
-
-            if (root.data === reqValue) {
-
-                if (parent.left === root) {
-                    parent.left = null;
-            
-                } else {
-                    parent.right = null;
-                }
-
-                root = null;
-                return root
-            }   
-        
-            deleteLeafNode(root.left, reqValue, root);
-            deleteLeafNode(root.right, reqValue, root);
-            
-            return root;
-        }
-        
-        // Utility function if one child is empty
-        const deleteOneChildNode = function (root, reqValue, parent) {
-            if (root === null) return root
-
-            if (root.data === reqValue) {
-
-                let successor;
-                if (root.left === null) {
-                     successor = root.right;
-
-                } else {
-                    successor = root.left;
-                }
-                
-                if (parent.left === root) {
-                    parent.left = successor;
-                } else {
-                    parent.right = successor;
-                }   
-                
-                root = successor;
-                return root
-            }   
-        
-            deleteOneChildNode(root.left, reqValue, root);
-            deleteOneChildNode(root.right, reqValue, root);
-            
-            return root;
-        }
-
-        // Utility function if two children
-        const deleteTwoChildNode = function (root, nodeForDel, reqValue) {
-            
-            let minRightNode = nodeForDel.right;
-            let current = nodeForDel.right; // start right side of no
-            
-            while (current !== null) {
-                // current is leaf
-                if (!current.left && !current.right ) {
-                    if (current.data < minRightNode.data) {
-                        minRightNode = current
-                    }
-                }
-
-                if (!current.left) {
-                    current = current.right
-                } else {
-                    current = current.left
-                }
-
-            }
-            
-            // successor is not leaf
-            if (nodeForDel.right === minRightNode) {
-                const tempLeft = nodeForDel.left;
-                nodeForDel = minRightNode;
-                nodeForDel.left = tempLeft;
-
-                if (nodeParent.left.data === reqValue) {
-                    nodeParent.left = nodeForDel;
-                } else {
-                    nodeParent.right = nodeForDel;
-                }
-
-            } else {
-                const tempData = nodeForDel.data;
-                nodeForDel.data = minRightNode.data;
-                minRightNode.data = tempData;
-                deleteLeafNode(root, tempData, null)
-            }
-
-            return root
-        }
-
-        if (!nodeDel) {
-            return
-
-        } else if (!nodeDel.left && !nodeDel.right) {
-            this.root = deleteLeafNode(this.root, value, null);
-
-        } else if ( (nodeDel.left && !nodeDel.right) || (!nodeDel.left && nodeDel.right) ) {
-            this.root = deleteOneChildNode(this.root, value, null);
-
-        } else {
-
-            this.root = deleteTwoChildNode(this.root, nodeDel, value);
-        }
-
-        
-
-    }
-
-    deleteNode2 (value) {
-
         // find the node for deletion
 
         const deleteNode = function (root, reqValue, parent) {
@@ -258,10 +137,49 @@ class Tree {
                     parent.left === root ? parent.left = null : parent.right = null;
 
                     root = null
-                    return null
+                    return root
                 }
 
-                
+                // If node has one child
+                if ((root.left && !root.right) || (!root.left && root.right)) {
+
+                    let successor = root.left === null ? root.right : root.left;
+
+                    parent.left === root ? parent.left = successor : parent.right = successor;
+
+                    root = successor;
+                    return root
+                }
+
+                //  If Node has 2 children
+                if (root.left && root.right) {
+
+                    // Reiterate over the right child tree of the node for deletion
+                    // to find successor
+
+                    let minRightNode = root.right;
+                    let current = root.right; // start at right side of node
+
+                    while (current !== null) {
+                        if (current.data < minRightNode.data) {
+                            // !current.left && !current.right &&  
+                            // Note:  current.data < minRightNode.data
+                            // Ensures that the left is the smallest value in the right of node for deletion
+                            minRightNode = current;
+                        }
+
+                        // Prioritize traversing to the left children, since were searching for smallest value
+                        current = !current.left ?  current.right : current.left;
+                    }
+
+                    // Swap data/ position of node for deletion and successor node
+                    const tempData = root.data;
+                    root.data = minRightNode.data;
+                    minRightNode.data = tempData;
+
+                    // Recursively call deleteNode, attempting to delete node using conditional of 0 or 1 child
+                    return deleteNode(root, reqValue, null)  
+                }
 
             }
 
@@ -269,34 +187,30 @@ class Tree {
             const rightSide = deleteNode(root.right, reqValue, root);
 
             return leftSide ? leftSide : rightSide;
-
-
-
         }
-
 
         deleteNode(this.root, value, null)
 
     }
 
-    parent (value) {
+    // parent (value) {
 
-        const getParent = function (root, reqValue, parent) {
+    //     const getParent = function (root, reqValue, parent) {
 
-            if (root === null) return null;
+    //         if (root === null) return null;
 
-            if (root.data === reqValue) return parent
+    //         if (root.data === reqValue) return parent
 
-            const leftSide = getParent(root.left, reqValue, root);
-            const rightSide = getParent(root.right, reqValue, root);
+    //         const leftSide = getParent(root.left, reqValue, root);
+    //         const rightSide = getParent(root.right, reqValue, root);
 
-            return leftSide ? leftSide : rightSide;
+    //         return leftSide ? leftSide : rightSide;
             
-        }
+    //     }
 
-        return getParent(this.root, value, null)
+    //     return getParent(this.root, value, null)
 
-    }
+    // }
 
     printTree () {
 
@@ -341,8 +255,8 @@ testTree.insert(7);
 testTree.insert(50);
 
 testTree.printTree();
-testTree.deleteNode2(75);
-testTree.deleteNode2(80);
+testTree.delete(50);
+
 
 testTree.printTree();
 // console.log(testTree);

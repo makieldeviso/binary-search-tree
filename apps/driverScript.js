@@ -21,6 +21,4 @@ const unbalance = function (tree, addSize) {
 
 }
 
-
-
 export {createRandomArr, unbalance}

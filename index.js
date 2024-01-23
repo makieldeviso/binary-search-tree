@@ -14,7 +14,6 @@ class Tree {
     }
 
     buildTree (arr) {
-
         const sortArr = function (unsortedArr) {
 
             // Merges leftSide and rightSide
@@ -82,7 +81,6 @@ class Tree {
     }
 
     insert (value) {
-
         const insertNode = function (root, newValue) {
         
             if (root === null) {
@@ -109,9 +107,6 @@ class Tree {
     }
 
     delete (value) {
-
-        // find the node for deletion
-
         const deleteNode = function (root, reqValue, parent) {
 
             if (root === null) return null
@@ -177,7 +172,6 @@ class Tree {
         }
 
         deleteNode(this.root, value, null)
-
     }
 
     find (value) {
@@ -195,30 +189,9 @@ class Tree {
         }
 
         return findNode(this.root, value)
-
     }
 
-    // parent (value) {
-
-    //     const getParent = function (root, reqValue, parent) {
-
-    //         if (root === null) return null;
-
-    //         if (root.data === reqValue) return parent
-
-    //         const leftSide = getParent(root.left, reqValue, root);
-    //         const rightSide = getParent(root.right, reqValue, root);
-
-    //         return leftSide ? leftSide : rightSide;
-            
-    //     }
-
-    //     return getParent(this.root, value, null)
-
-    // }
-
     levelOrder () {
-
         const root = this.root;
 
         let resultArr = [];
@@ -239,7 +212,6 @@ class Tree {
     }
 
     preOrder () {
-
         const getPreOrder = function (root, resultArr) {
             if (root === null) return []
 
@@ -249,12 +221,9 @@ class Tree {
             resultArr.push(root.data);
 
             return [...resultArr, ...leftSide, ...rightSide];
-
         }
 
-
         return getPreOrder(this.root, []);
-
     }
 
     inOrder() {
@@ -356,7 +325,6 @@ class Tree {
     }
 
     printTree () {
-
         const prettyPrint = (node, prefix = "", isLeft = true) => {
             if (node === null) {
               return;
@@ -372,19 +340,10 @@ class Tree {
 
           return prettyPrint(this.root)
     }
-    
 }
-
-// const testArr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
-// const testTree = new Tree();
-// testTree.buildTree(testArr);
-// testTree.printTree();
-
-// console.log(testTree)
 
 const testArr = createRandomArr(20); // Note: size might be reduced in tree since sorting removes duplicates
 console.log(testArr); // Random numbers array, 
-
 
 const testTree = new Tree(testArr); 
 console.log(testTree); // Tree with  random numbers array

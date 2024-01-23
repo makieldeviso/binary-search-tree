@@ -1,3 +1,5 @@
+import { createRandomArr, unbalance } from "./apps/driverScript.js";
+
 class Node {
     constructor (value) {
         this.data = value;
@@ -7,8 +9,8 @@ class Node {
 }
 
 class Tree {
-    constructor () {
-        this.root = null;
+    constructor (arr) {
+        this.root = arr ? this.buildTree(arr) : null
     }
 
     buildTree (arr) {
@@ -72,8 +74,11 @@ class Tree {
         // Utility functions calls
         const sortedArr = sortArr(arr); // sorts the argument array using merge sorts
 
-        //  Reassign tree root node by executing build tree function using the sorted array
-        this.root = createTree(sortedArr, sortedArr[0], sortedArr[sortedArr.length - 1]);
+        // Reassign tree root node by executing build tree function using the sorted array
+        // Return level 0 root
+        const newRoot = createTree(sortedArr, sortedArr[0], sortedArr[sortedArr.length - 1]);
+        this.root = newRoot;
+        return newRoot;
     }
 
     insert (value) {
@@ -344,8 +349,10 @@ class Tree {
     }
 
     rebalance() {
-        const inOrderArr = this.inOrder(this.root);
-        this.buildTree(inOrderArr);
+        if (!this.isBalanced()) {
+            const inOrderArr = this.inOrder(this.root);
+            this.buildTree(inOrderArr);
+        }
     }
 
     printTree () {
@@ -368,38 +375,39 @@ class Tree {
     
 }
 
-const testArr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
-const testTree = new Tree();
-
+// const testArr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
+// const testTree = new Tree();
 // testTree.buildTree(testArr);
-testTree.insert(40);
-testTree.insert(50);
-testTree.insert(45);
-testTree.insert(47);
-testTree.insert(43);
-testTree.insert(10);
-testTree.insert(60);
-testTree.insert(55);
-testTree.insert(70);
-testTree.insert(65);
-testTree.insert(80);
-testTree.insert(75);
-testTree.insert(30);
-testTree.insert(20);
-testTree.insert(25);
-testTree.insert(5);
-testTree.insert(7);
-testTree.insert(50);
-testTree.insert(72);
-testTree.insert(73);
+// testTree.printTree();
 
+// console.log(testTree)
+
+const testArr = createRandomArr(20); // Note: size might be reduced in tree since sorting removes duplicates
+console.log(testArr); // Random numbers array, 
+
+
+const testTree = new Tree(testArr); 
+console.log(testTree); // Tree with  random numbers array
+testTree.printTree(); // Pretty prints the tree
+
+console.log(testTree.isBalanced()); // Check if balanced
+console.log(testTree.preOrder());   // Prints preOrder array
+console.log(testTree.inOrder());    // Prints inOrder array
+console.log(testTree.postOrder());  // Prints postOrder array
+
+// Unbalanced
+unbalance(testTree, 13); // Unbalance tree by inserting new random number array
 testTree.printTree();
-console.log(testTree.root.data);
-console.log(testTree.isBalanced());
+console.log(testTree.isBalanced()); // Check if balanced
+console.log(testTree.preOrder());   // Prints preOrder array
+console.log(testTree.inOrder());    // Prints inOrder array
+console.log(testTree.postOrder());  // Prints postOrder array
 
-
+// Rebalanced
 testTree.rebalance()
-
 testTree.printTree();
-console.log(testTree.root.data);
-console.log(testTree.isBalanced());
+console.log(testTree.isBalanced()); // Check if balanced
+console.log(testTree.preOrder());   // Prints preOrder array
+console.log(testTree.inOrder());    // Prints inOrder array
+console.log(testTree.postOrder());  // Prints postOrder array
+

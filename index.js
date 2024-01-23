@@ -282,31 +282,65 @@ class Tree {
 
         return getPostOrder(this.root)
     }
-
-    height () {
-
-        const getHeight = function (childrenArr) {
-        
+    
+    _getLevels (childrenArr, reqValue, levelData = {value: reqValue, depth: 0, treeHeight: 0}) {
             const newArr = [];
             const lastLevel = childrenArr[childrenArr.length - 1];
             
-           lastLevel.forEach(node => {
+            // Reiterate current last index array to incase its children to a new Array
+            lastLevel.forEach(node => {
+                if (node.data === reqValue && levelData.depth === 0) {
+                // If value is found in current childrenArray last index, log data
+                    levelData.depth = childrenArr.length - 1;
+                }
+
                 if (node.left) newArr.push(node.left);
                 if (node.right) newArr.push(node.right);
             })
 
             if (newArr.length > 0) {
+            // If new children are found push it to current childrenArr
                 childrenArr.push(newArr)
             } else {
+            // Else, no more children no new Array is pushed
+            // Log final height of tree. Note: first level is 0
+                levelData.treeHeight = childrenArr.length - 1;
                 return childrenArr
             }
 
-            getHeight(childrenArr)
-            return childrenArr.length ;
+            this._getLevels(childrenArr, reqValue, levelData)
+            return {childrenArr, levelData} ;
        }
 
-        return getHeight([[this.root]]);
+    height (node, root = this.root) {
+        // Execute _getLevels method to get level data
+        // If root argument is empty, parameter root = this.root, else root = argument root node
+        
+        const levels = this._getLevels([[root]], node.data).levelData;
 
+        const height = levels.treeHeight - levels.depth
+
+        return height
+    }
+
+    depth (node, root = this.root) {
+        // Execute _getLevels method to get level data
+        // If root argument is empty, parameter root = this.root, else root = argument root node
+        
+        const levels = this._getLevels([[root]], node.data).levelData;
+
+        return levels.depth;
+    }
+
+    isBalanced () {
+
+        const leftSideRoot = this.root.left
+        const rightSideRoot = this.root.right
+
+        const leftSideHeight = this.height(leftSideRoot, leftSideRoot);
+        const rightSideHeight = this.height(rightSideRoot, rightSideRoot);
+        
+        return Math.abs(leftSideHeight - rightSideHeight) <= 1 ? true : false;
     }
 
     printTree () {
@@ -331,28 +365,31 @@ class Tree {
 
 const testArr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 const testTree = new Tree();
-testTree.buildTree(testArr);
-// testTree.insert(40);
-// testTree.insert(50);
-// testTree.insert(45);
-// testTree.insert(47);
-// testTree.insert(43);
-// testTree.insert(10);
-// testTree.insert(60);
-// testTree.insert(55);
-// testTree.insert(70);
-// testTree.insert(65);
-// testTree.insert(80);
-// testTree.insert(75);
-// testTree.insert(30);
-// testTree.insert(20);
-// testTree.insert(25);
-// testTree.insert(5);
-// testTree.insert(7);
-// testTree.insert(50);
-
+// testTree.buildTree(testArr);
+testTree.insert(40);
+testTree.insert(50);
+testTree.insert(45);
+testTree.insert(47);
+testTree.insert(43);
+testTree.insert(10);
+testTree.insert(60);
+testTree.insert(55);
+testTree.insert(70);
+testTree.insert(65);
+testTree.insert(80);
+testTree.insert(75);
+testTree.insert(30);
+testTree.insert(20);
+testTree.insert(25);
+testTree.insert(5);
+testTree.insert(7);
+testTree.insert(50);
+testTree.insert(73);
+testTree.insert(52);
 testTree.printTree();
 
-console.log(testTree.height());
+const testNode = testTree.find(30);
+
+console.log(testTree.isBalanced());
 
 console.log(testTree);

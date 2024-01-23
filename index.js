@@ -283,6 +283,31 @@ class Tree {
         return getPostOrder(this.root)
     }
 
+    height () {
+
+        const getHeight = function (childrenArr) {
+        
+            const newArr = [];
+            const lastLevel = childrenArr[childrenArr.length - 1];
+            
+           lastLevel.forEach(node => {
+                if (node.left) newArr.push(node.left);
+                if (node.right) newArr.push(node.right);
+            })
+
+            if (newArr.length > 0) {
+                childrenArr.push(newArr)
+            } else {
+                return childrenArr
+            }
+
+            getHeight(childrenArr)
+            return childrenArr.length ;
+       }
+
+        return getHeight([[this.root]]);
+
+    }
 
     printTree () {
 
@@ -306,27 +331,28 @@ class Tree {
 
 const testArr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 const testTree = new Tree();
-// testTree.buildTree(testArr);
-testTree.insert(40);
-testTree.insert(50);
-testTree.insert(45);
-testTree.insert(47);
-testTree.insert(43);
-testTree.insert(10);
-testTree.insert(60);
-testTree.insert(55);
-testTree.insert(70);
-testTree.insert(65);
-testTree.insert(80);
-testTree.insert(75);
-testTree.insert(30);
-testTree.insert(20);
-testTree.insert(25);
-testTree.insert(5);
-testTree.insert(7);
-testTree.insert(50);
+testTree.buildTree(testArr);
+// testTree.insert(40);
+// testTree.insert(50);
+// testTree.insert(45);
+// testTree.insert(47);
+// testTree.insert(43);
+// testTree.insert(10);
+// testTree.insert(60);
+// testTree.insert(55);
+// testTree.insert(70);
+// testTree.insert(65);
+// testTree.insert(80);
+// testTree.insert(75);
+// testTree.insert(30);
+// testTree.insert(20);
+// testTree.insert(25);
+// testTree.insert(5);
+// testTree.insert(7);
+// testTree.insert(50);
 
 testTree.printTree();
 
-console.log(testTree.postOrder());
+console.log(testTree.height());
+
 console.log(testTree);

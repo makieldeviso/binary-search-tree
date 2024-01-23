@@ -71,7 +71,7 @@ class Tree {
 
         // Utility functions calls
         const sortedArr = sortArr(arr); // sorts the argument array using merge sorts
-        console.log(sortedArr);
+
         //  Reassign tree root node by executing build tree function using the sorted array
         this.root = createTree(sortedArr, sortedArr[0], sortedArr[sortedArr.length - 1]);
     }
@@ -343,6 +343,11 @@ class Tree {
         return Math.abs(leftSideHeight - rightSideHeight) <= 1 ? true : false;
     }
 
+    rebalance() {
+        const inOrderArr = this.inOrder(this.root);
+        this.buildTree(inOrderArr);
+    }
+
     printTree () {
 
         const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -365,6 +370,7 @@ class Tree {
 
 const testArr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]
 const testTree = new Tree();
+
 // testTree.buildTree(testArr);
 testTree.insert(40);
 testTree.insert(50);
@@ -384,12 +390,16 @@ testTree.insert(25);
 testTree.insert(5);
 testTree.insert(7);
 testTree.insert(50);
+testTree.insert(72);
 testTree.insert(73);
-testTree.insert(52);
+
 testTree.printTree();
-
-const testNode = testTree.find(30);
-
+console.log(testTree.root.data);
 console.log(testTree.isBalanced());
 
-console.log(testTree);
+
+testTree.rebalance()
+
+testTree.printTree();
+console.log(testTree.root.data);
+console.log(testTree.isBalanced());

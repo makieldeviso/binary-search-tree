@@ -103,24 +103,6 @@ class Tree {
         this.root = insertNode(this.root, value);
     }
 
-    find (value) {
-
-        const findNode = function (root, reqValue) {
-
-            if (root === null) return null
-
-            if (root.data === reqValue) return root
-
-            const leftSide = findNode(root.left, reqValue);
-            const rightSide = findNode(root.right, reqValue);
-
-            return leftSide ? leftSide : rightSide;
-        }
-
-        return findNode(this.root, value)
-
-    }
-
     delete (value) {
 
         // find the node for deletion
@@ -193,6 +175,24 @@ class Tree {
 
     }
 
+    find (value) {
+
+        const findNode = function (root, reqValue) {
+
+            if (root === null) return null
+
+            if (root.data === reqValue) return root
+
+            const leftSide = findNode(root.left, reqValue);
+            const rightSide = findNode(root.right, reqValue);
+
+            return leftSide ? leftSide : rightSide;
+        }
+
+        return findNode(this.root, value)
+
+    }
+
     // parent (value) {
 
     //     const getParent = function (root, reqValue, parent) {
@@ -211,6 +211,78 @@ class Tree {
     //     return getParent(this.root, value, null)
 
     // }
+
+    levelOrder () {
+
+        const root = this.root;
+
+        let resultArr = [];
+        let order = [root];
+
+        while (order.length !== 0) {
+            // Note: front is in the last index of array (head of queue)
+            const front = order.pop();
+
+            if (front.left) order.unshift(front.left);
+            if (front.right) order.unshift(front.right);
+            
+            resultArr.push(front.data);
+        }
+
+        return resultArr;
+
+    }
+
+    preOrder () {
+
+        const getPreOrder = function (root, resultArr) {
+            if (root === null) return []
+
+            const leftSide = getPreOrder(root.left, [...resultArr]);
+            const rightSide = getPreOrder(root.right, [...resultArr]);
+            
+            resultArr.push(root.data);
+
+            return [...resultArr, ...leftSide, ...rightSide];
+
+        }
+
+
+        return getPreOrder(this.root, []);
+
+    }
+
+    inOrder() {
+        const getInOrder = function (root, resultArr = []) {
+
+            if (root) {
+                getInOrder(root.left, resultArr);
+                resultArr.push(root.data);
+                getInOrder(root.right, resultArr);
+
+            }
+
+            return resultArr
+        }
+
+        return getInOrder(this.root)
+    }
+
+    postOrder () {
+        const getPostOrder = function (root, resultArr = []) {
+
+            if (root) {
+               getPostOrder(root.left, resultArr);
+               getPostOrder(root.right, resultArr);
+               resultArr.push(root.data)
+            }
+
+            return resultArr
+        }
+
+        return getPostOrder(this.root)
+    }
+
 
     printTree () {
 
@@ -255,8 +327,6 @@ testTree.insert(7);
 testTree.insert(50);
 
 testTree.printTree();
-testTree.delete(50);
 
-
-testTree.printTree();
-// console.log(testTree);
+console.log(testTree.postOrder());
+console.log(testTree);

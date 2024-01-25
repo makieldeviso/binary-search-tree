@@ -18,7 +18,7 @@ class Tree {
 
             // Merges leftSide and rightSide
             const merge = function (left, right) {
-                let sortedArr = []
+                let sortedArr = [];
 
                 while(left.length && right.length) {
                     const lastValue = sortedArr[sortedArr.length - 1];
@@ -197,7 +197,7 @@ class Tree {
         let resultArr = [];
         let order = [root];
 
-        while (order.length !== 0) {
+        while (order.length > 0) {
             // Note: front is in the last index of array (head of queue)
             const front = order.pop();
 
@@ -355,18 +355,19 @@ console.log(testTree.inOrder());    // Prints inOrder array
 console.log(testTree.postOrder());  // Prints postOrder array
 
 // Unbalanced
-unbalance(testTree, 13); // Unbalance tree by inserting new random number array
-testTree.printTree();
-console.log(testTree.isBalanced()); // Check if balanced
-console.log(testTree.preOrder());   // Prints preOrder array
-console.log(testTree.inOrder());    // Prints inOrder array
-console.log(testTree.postOrder());  // Prints postOrder array
+// unbalance(testTree, 13); // Unbalance tree by inserting new random number array
+// testTree.printTree();
+// console.log(testTree.isBalanced()); // Check if balanced
+// console.log(testTree.preOrder());   // Prints preOrder array
+// console.log(testTree.inOrder());    // Prints inOrder array
+// console.log(testTree.postOrder());  // Prints postOrder array
 
-// Rebalanced
-testTree.rebalance()
-testTree.printTree();
-console.log(testTree.isBalanced()); // Check if balanced
-console.log(testTree.preOrder());   // Prints preOrder array
-console.log(testTree.inOrder());    // Prints inOrder array
-console.log(testTree.postOrder());  // Prints postOrder array
+// // Rebalanced
+// testTree.rebalance()
+// testTree.printTree();
+// console.log(testTree.isBalanced()); // Check if balanced
+// console.log(testTree.preOrder());   // Prints preOrder array
+// console.log(testTree.inOrder());    // Prints inOrder array
+// console.log(testTree.postOrder());  // Prints postOrder array
 
+console.log(testTree.levelOrder());
